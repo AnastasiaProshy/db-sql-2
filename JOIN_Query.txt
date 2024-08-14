@@ -1,0 +1,69 @@
+1. Select all students enrolled in the Bachelor's Degree in Economics:
+
+select degrees.name, students.*
+from degrees
+inner join students on degrees.id = students.degree_id
+where degrees.name like '% in Economia';
+
+
+
+2. Select all Master's Degree Programs in the Department of Neurosciences:
+
+select departments.name, degrees.name as degree, courses.name as courses_names, courses.*
+from degrees
+inner join courses on degrees.id = courses.degree_id
+inner join departments on degrees.id = departments.id 
+where degrees.`level` = 'magistrale'
+and departments.name like '%Neuroscienze';
+
+
+
+3. Select all courses taught by Fulvio Amato (id=44):
+
+
+select teachers.name, teachers.surname, courses.* 
+from course_teacher
+inner join teachers on teachers.id = course_teacher.teacher_id 
+inner join courses  on courses.id  = course_teacher.course_id 
+where teachers.id = 44; 
+oppure 
+where teachers.name like 'Fulvio%';
+
+
+
+4. Select all students with information about the degree program they are enrolled in 
+and the corresponding department, sorted alphabetically by surname and first name:
+
+
+select departments.name, degrees.name, students.*
+from students
+inner join degrees on degrees.id = students.degree_id
+inner join departments on departments.id = degrees.department_id
+order by students.name;
+
+
+
+5. Select all degree programs along with their courses and teachers:
+
+SELECT 
+degrees.name AS corso_laurea, 
+courses.name AS course_name, 
+teachers.name AS teacher_name, 
+teachers.surname AS teacher_surname
+FROM degrees
+LEFT JOIN courses ON degrees.id = courses.degree_id
+LEFT JOIN course_teacher ON courses.id = course_teacher.course_id
+LEFT JOIN teachers ON course_teacher.teacher_id = teachers.id
+ORDER BY degrees.name, courses.name;
+
+
+
+6. Select all professors teaching in the Department of Mathematics (54):
+
+select departments.name, teachers.* 
+from departments
+left join degrees 			on departments.id = degrees.department_id 
+left join courses 			on degrees.id = courses.degree_id 
+left join course_teacher   	on courses.id = course_id 
+left join teachers 			on course_teacher.teacher_id = teachers.id 
+where departments.name like '%tica';
